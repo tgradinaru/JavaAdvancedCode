@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SimulateClass {
     private static List<Student> students, studentsRo16, studentsRo17, studentsRo18, studentsRo19;
@@ -9,6 +10,17 @@ public class SimulateClass {
     private static List<StudentsClass> studentClasses;
     private static Trainer trainer1, trainer2, trainer3;
     //private static List<StudentsClass> maxClassList;
+
+    //////////varArgs
+    private static String getLongestString(String... longestStringArray) {
+        String auxString = "";
+        for (String element : longestStringArray) {
+            if (element.length() > auxString.length()) {
+                auxString = element;
+            }
+        }
+        return auxString;
+    }
 
     public static void main(String[] args) {
         createClassHierarchy();
@@ -24,21 +36,25 @@ public class SimulateClass {
 
         System.out.println("----- Clasele cu nr maxim de studenti: ---- Classic method---");
         for (StudentsClass element : getAllClassNamesWithMaxNoOfStudents_classicMethod()) {
-            System.out.println("     " + element.getStudentClassName());
+            System.out.println("   " + element.getStudentClassName());
         }
 
         //printStudentsAlphabetically_LastNames();                      // sorted last names
         //printStudentsAlphabetically_FirstNames();                      // sorted first names
         //displayStudentsYougerThan(25);                                // students younger than integer years
         //displayStudentsgroupedByTrainer();
-        //displayAllStudentsWithPreviousJavaKnowledge();
+        displayAllStudentsWithPreviousJavaKnowledge();
         //displayMaxGroupWithoutPreviousJavaKnolede();
         //removeStudentsYoungerThanFromGroups(25);
 
-        System.out.println("Triplu: "+ tripleNumberOfStudentFromMaxGroup(getAllClassNamesWithMaxNoOfStudents_classicMethod()));
+        System.out.println("Triplu: "
+                + tripleNumberOfStudentFromMaxGroup(getAllClassNamesWithMaxNoOfStudents_classicMethod()));
+
+        System.out.println(getLongestString("Trainer1999", "Trainer12", "Trainer99999"));
+        System.out.println(getLongestString("Trainer1999"));
+        System.out.println(getLongestString());
 
     }
-
 
     //Display all students grouped by a trainer that teaches to them
     private static void displayStudentsgroupedByTrainer() {
@@ -61,16 +77,26 @@ public class SimulateClass {
     private static void displayAllStudentsWithPreviousJavaKnowledge() {
         System.out.println("-----------Students with previous java knowledge------------");
         students.stream()
-                .filter(student -> student.hasPreviousJavaKnowledge == true)
+                .filter(student -> student != null && student.hasPreviousJavaKnowledge)
+                //.filter(student -> method1() & method2()) //chiar daca prima returneaza false se executa a doua cu "&"
                 .forEach(System.out::println);
     }
 
     //Display all students younger than 25, from all groups
-    private static void displayStudentsYougerThan(int age) {
-        System.out.println("--------Student's lista younger than " + age);
-        students.stream()
+    private static List<Student> displayStudentsYougerThan(int age) {
+        //System.out.println("--------Student's lista younger than " + age);
+        return students.stream()
                 .filter(student -> Period.between(student.getDateOfBirth(), LocalDate.now()).getYears() < age)
-                .forEach(student -> System.out.println(student));
+                //.forEach(student -> System.out.println(student));
+                .collect(Collectors.toList());
+    }
+
+    //Collect all students younger than 25, from all groups
+    private static List<String> collectStudentsNamesYougerThan(int age) {
+        return students.stream()
+                .filter(student -> student.getAge() < age)
+                .map(student -> student.getFirstName())
+                .collect(Collectors.toList());
     }
 
     //Display all students in a group sorted alphabetically by lastName
@@ -98,6 +124,9 @@ public class SimulateClass {
                                 .filter(student -> !student.isHasPreviousJavaKnowledge()).count()))
                         .get().toString()
         );
+
+        //incercati sa faceti dintr-o singura iteratie verifici lista din grup, si updatezi lista
+        //daca gasesti o lista mai mare cu studenti fara cunostinte
     }
 
     //Remove all the students younger than 20 from all groups
@@ -107,7 +136,7 @@ public class SimulateClass {
         for (StudentsClass studentsClass : studentClasses) {
             List<Student> auxStudentList = new LinkedList<>();
             for (Student student : studentsClass.getStudentList()) {
-                if (Period.between(student.getDateOfBirth(), LocalDate.now()).getYears() >= age) {
+                if (student.getAge() >= age) {
                     auxStudentList.add(student);
                 }
             }
@@ -149,16 +178,15 @@ public class SimulateClass {
                 maxClassList.add(element);
             }
         }
-
-
         return maxClassList;
     }
 
     // multiplicarea numarului de studenti din toate grupele din maxGroup
-    private static int multiplyingNumberOfStudentFromMaxGroup(int multiplier, List<StudentsClass> maxClassList){
+    private static int multiplyingNumberOfStudentFromMaxGroup(int multiplier, List<StudentsClass> maxClassList) {
         return maxClassList.size() * maxClassList.get(0).getStudentList().size() * multiplier;
     }
-        private static int tripleNumberOfStudentFromMaxGroup(List<StudentsClass> maxClassList){
+
+    private static int tripleNumberOfStudentFromMaxGroup(List<StudentsClass> maxClassList) {
         return multiplyingNumberOfStudentFromMaxGroup(3, maxClassList);
     }
 

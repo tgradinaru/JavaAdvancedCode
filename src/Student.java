@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Student extends Person {
     boolean hasPreviousJavaKnowledge;
@@ -21,7 +22,7 @@ public class Student extends Person {
     }
 
     public int getAge(){
-        return LocalDate.now().getYear() - super.getDateOfBirth().getYear();
+        return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
     }
 
     public LocalDate getDateOfBirth(){
