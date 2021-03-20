@@ -1,9 +1,7 @@
-import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SimulateClass {
     private static List<Student> students, studentsRo16, studentsRo17, studentsRo18, studentsRo19;
