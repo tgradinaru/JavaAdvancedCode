@@ -31,11 +31,11 @@ public class SimulateClass {
         //printStudents();
         printStudentsClassList();                                     //groups
         //printMaxNoOfStudentsFromClass_classicMethod();                // first class with max number of students
-        getAllClassNamesWithMaxNoOfStudents_classicMethod();        // class names with max number of students
+        getAllClassNamesWithMaxNoOfStudents_classicMethod(studentClasses);        // class names with max number of students
 
 
         System.out.println("----- Clasele cu nr maxim de studenti: ---- Classic method---");
-        for (StudentsClass element : getAllClassNamesWithMaxNoOfStudents_classicMethod()) {
+        for (StudentsClass element : getAllClassNamesWithMaxNoOfStudents_classicMethod(studentClasses)) {
             System.out.println("   " + element.getStudentClassName());
         }
 
@@ -48,7 +48,7 @@ public class SimulateClass {
         //removeStudentsYoungerThanFromGroups(25);
 
         System.out.println("Triplu: "
-                + tripleNumberOfStudentFromMaxGroup(getAllClassNamesWithMaxNoOfStudents_classicMethod()));
+                + tripleNumberOfStudentFromMaxGroup(getAllClassNamesWithMaxNoOfStudents_classicMethod(studentClasses)));
 
         System.out.println(getLongestString("Trainer1999", "Trainer12", "Trainer99999"));
         System.out.println(getLongestString("Trainer1999"));
@@ -160,7 +160,7 @@ public class SimulateClass {
         System.out.println(maxSizeClass);
     }
 
-    private static List<StudentsClass> getAllClassNamesWithMaxNoOfStudents_classicMethod() {
+    public static List<StudentsClass> getAllClassNamesWithMaxNoOfStudents_classicMethod(List<StudentsClass> groupList) {
         System.out.println("--Display all groups with maximum students number -----");
         List<StudentsClass> maxClassList = new ArrayList<>();
         StudentsClass maxClass = new StudentsClass(null, new LinkedList<>(), null);
@@ -168,7 +168,7 @@ public class SimulateClass {
         //list retine si elemente duplicate
         //pt ordine alfabetica folosim -------- treeSet
 
-        for (StudentsClass element : studentClasses) {
+        for (StudentsClass element : groupList) {
             if (element.getStudentList().size() > maxClass.getStudentList().size()) {
                 maxClass = element;
                 maxClassList = new ArrayList<>();
