@@ -8,6 +8,7 @@ public class SimulateClass {
     private static List<Trainer> trainers;
     private static List<StudentsClass> studentClasses;
     private static Trainer trainer1, trainer2, trainer3;
+    //private static List<StudentsClass> maxClassList;
 
     public static void main(String[] args) {
         createClassHierarchy();
@@ -18,14 +19,23 @@ public class SimulateClass {
         //printStudents();
         printStudentsClassList();                                     //groups
         //printMaxNoOfStudentsFromClass_classicMethod();                // first class with max number of students
-        //printAllClassNamesWithMaxNoOfStudents_classicMethod();        // class names with max number of students
+        getAllClassNamesWithMaxNoOfStudents_classicMethod();        // class names with max number of students
+
+
+        System.out.println("----- Clasele cu nr maxim de studenti: ---- Classic method---");
+        for (StudentsClass element : getAllClassNamesWithMaxNoOfStudents_classicMethod()) {
+            System.out.println("     " + element.getStudentClassName());
+        }
+
         //printStudentsAlphabetically_LastNames();                      // sorted last names
         //printStudentsAlphabetically_FirstNames();                      // sorted first names
         //displayStudentsYougerThan(25);                                // students younger than integer years
         //displayStudentsgroupedByTrainer();
         //displayAllStudentsWithPreviousJavaKnowledge();
         //displayMaxGroupWithoutPreviousJavaKnolede();
-        removeStudentsYoungerThanFromGroups(25);
+        //removeStudentsYoungerThanFromGroups(25);
+
+        System.out.println("Triplu: "+ tripleNumberOfStudentFromMaxGroup(getAllClassNamesWithMaxNoOfStudents_classicMethod()));
 
     }
 
@@ -37,7 +47,7 @@ public class SimulateClass {
             System.out.println("\n" + trainer.getFirstName() + " has the following students: ");
             for (StudentsClass studentsClass : studentClasses) {
                 if (trainer.equals(studentsClass.getTrainer())) {
-                    System.out.println("* " + studentsClass.getClassName() + " *");
+                    System.out.println("* " + studentsClass.getStudentClassName() + " *");
 
                     for (Student student : studentsClass.getStudentList()) {
                         System.out.println(" -> " + student.getFirstName() + " " + student.getLastName());
@@ -48,7 +58,7 @@ public class SimulateClass {
     }
 
     //Display all students with previous java knowledge
-    private static void displayAllStudentsWithPreviousJavaKnowledge(){
+    private static void displayAllStudentsWithPreviousJavaKnowledge() {
         System.out.println("-----------Students with previous java knowledge------------");
         students.stream()
                 .filter(student -> student.hasPreviousJavaKnowledge == true)
@@ -81,13 +91,12 @@ public class SimulateClass {
 
     //Display the group with the highest number of students with no previous java knowledge
     public static void displayMaxGroupWithoutPreviousJavaKnolede() {
-        //System.out.println("Class with maximum number of Students with no previous java knowledge---");
-
+        System.out.println("---Class with maximum number of Students with no previous java knowledge---");
         System.out.println(
-        studentClasses.stream()
-                .max(Comparator.comparing(maxClass -> maxClass.getStudentList().stream()
-                        .filter(student -> !student.isHasPreviousJavaKnowledge()).count()))
-                .get().toString()
+                studentClasses.stream()
+                        .max(Comparator.comparing(maxClass -> maxClass.getStudentList().stream()
+                                .filter(student -> !student.isHasPreviousJavaKnowledge()).count()))
+                        .get().toString()
         );
     }
 
@@ -107,9 +116,6 @@ public class SimulateClass {
         System.out.print("Java classes after removing students younger than" + age + " years: " + studentClasses);
     }
 
-
-
-
     //Display the group with the maximum number of students
     private static void printMaxNoOfStudentsFromClass_classicMethod() { ////classic method
 
@@ -121,14 +127,17 @@ public class SimulateClass {
                 maxSizeClass = studentClass;
             }
         }
-        System.out.println("Max class size is: " + maxSizeClass.getClassName());
+        System.out.println("Max class size is: " + maxSizeClass.getStudentClassName());
         System.out.println(maxSizeClass);
     }
 
-    private static void printAllClassNamesWithMaxNoOfStudents_classicMethod() {
-        System.out.println("--All max students number groups--");
+    private static List<StudentsClass> getAllClassNamesWithMaxNoOfStudents_classicMethod() {
+        System.out.println("--Display all groups with maximum students number -----");
         List<StudentsClass> maxClassList = new ArrayList<>();
         StudentsClass maxClass = new StudentsClass(null, new LinkedList<>(), null);
+        //set retine elemente neduplicate - Linked - ordinea insertiei
+        //list retine si elemente duplicate
+        //pt ordine alfabetica folosim -------- treeSet
 
         for (StudentsClass element : studentClasses) {
             if (element.getStudentList().size() > maxClass.getStudentList().size()) {
@@ -139,14 +148,20 @@ public class SimulateClass {
             } else if (element.getStudentList().size() == maxClass.getStudentList().size()) {
                 maxClassList.add(element);
             }
-
         }
 
-        System.out.println("----- Clasele cu nr maxim de studenti: ---- Classic method---");
-        for (StudentsClass element : maxClassList) {
-            System.out.println("     " + element.getClassName());
-        }
+
+        return maxClassList;
     }
+
+    // multiplicarea numarului de studenti din toate grupele din maxGroup
+    private static int multiplyingNumberOfStudentFromMaxGroup(int multiplier, List<StudentsClass> maxClassList){
+        return maxClassList.size() * maxClassList.get(0).getStudentList().size() * multiplier;
+    }
+        private static int tripleNumberOfStudentFromMaxGroup(List<StudentsClass> maxClassList){
+        return multiplyingNumberOfStudentFromMaxGroup(3, maxClassList);
+    }
+
 
     private static void printStudents() {
         System.out.println(students);

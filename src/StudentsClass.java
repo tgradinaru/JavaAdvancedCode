@@ -1,26 +1,19 @@
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class StudentsClass {
     private Trainer trainer;
     private List<Student> studentList;
-    public String className;
+    private final String studentClassName; //final ca sa nu mai poata fi modificata dupa initializare
 
-    public StudentsClass(Trainer trainer, List<Student> studentList, String className) {
-
+    public StudentsClass(Trainer trainer, List<Student> studentList, String studentClassName) {
         this.trainer = trainer;
         if (studentList.size() <= 5) {
             this.studentList = studentList;
         } else{
-
             throw new MaximumNumberOfStudentsReached("Students limit exceeded");
         }
-        this.className = className;
+        this.studentClassName = studentClassName;
     }
-
-    /*public StudentsClass(Object trainer, LinkedHashSet<Object> objects) {
-    }*/
 
     public void setTrainer(Trainer trainer) {
         this.trainer = trainer;
@@ -30,8 +23,8 @@ public class StudentsClass {
         this.studentList = studentList;
     }
 
-    public String getClassName() {
-        return className;
+    public String getStudentClassName() {
+        return studentClassName;
     }
 
     public List<Student> getStudentList() {
@@ -48,7 +41,7 @@ public class StudentsClass {
         return "StudentsClass{" +
                 "trainer=" + trainer +
                 ", studentList=" + studentList +
-                ", className='" + className + '\'' +
+                ", className='" + studentClassName + '\'' +
                 '}';
     }
 }
